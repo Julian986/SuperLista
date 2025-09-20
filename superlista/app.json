@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "SuperLista",
+    "slug": "superlista-familia",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#4CAF50"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.superlista.familia"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#4CAF50"
+      },
+      "package": "com.superlista.familia",
+      "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a3328c66-1062-4527-b70d-8a1924c9a3b9"
+      }
+    },
+    "owner": "juliancito92"
+  }
+}
