@@ -60,6 +60,16 @@
 - Se actualiza en tiempo real
 - Ve quién agregó cada producto
 
+### **⚠️ IMPORTANTE: Mantener la App Activa**
+
+**Para que SuperLista siga funcionando:**
+- **Usen la app al menos 1 vez cada 7 días**
+- Puede ser solo para revisar la lista o agregar un producto
+- Si pasan más de 7 días sin usarla, la base de datos se pausa automáticamente
+- No se pierden datos, pero la app deja de funcionar hasta que Juli la reactive
+
+💡 **Consejo**: Usen la app regularmente para hacer la lista del super y así se mantiene siempre activa.
+
 ### **🔧 Solución de Problemas**
 
 #### **La app no carga:**

@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AddItemFormData, PLACES, UNITS, STATUSES, SupermarketItem } from '../types';
 
 interface AddItemModalProps {
@@ -44,6 +45,8 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
   editingItem,
   mode = 'add',
 }) => {
+  const insets = useSafeAreaInsets();
+  
   const [formData, setFormData] = useState<AddItemFormData>({
     name: '',
     qty: 1,
@@ -138,7 +141,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
     >
       <View style={styles.container}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { paddingTop: Math.max(insets.top, 16) }]}>
           <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
             <Ionicons name="close" size={24} color="#666" />
           </TouchableOpacity>
@@ -292,7 +295,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
         </ScrollView>
 
         {/* Botones de acción */}
-        <View style={styles.footer}>
+        <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
           <TouchableOpacity style={styles.cancelButton} onPress={handleClose}>
             <Text style={styles.cancelButtonText}>Cancelar</Text>
           </TouchableOpacity>
@@ -324,7 +327,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
     elevation: 2,
@@ -491,7 +494,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: '#E0E0E0',
     elevation: 4,
