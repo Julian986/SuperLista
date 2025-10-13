@@ -1,0 +1,47 @@
+name: EAS Update
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'contexts/**'
+      - 'hooks/**'
+      - 'lib/**'
+      - 'utils/**'
+      - 'types/**'
+      - 'constants/**'
+      - 'config/**'
+
+jobs:
+  update:
+    name: Publicar EAS Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: 🏗️ Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      - name: 🚀 Publicar update
+        run: eas update --auto --non-interactive
+
+      - name: ✅ Actualización completada
+        run: echo "✅ Update publicado exitosamente al canal preview"
+

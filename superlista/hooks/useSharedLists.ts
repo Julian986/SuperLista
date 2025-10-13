@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { SupermarketItem, AddItemFormData } from '../types';
 import { useHistoricalStats } from './useHistoricalStats';
+import { notifyItemAdded, notifyItemCompleted } from '../lib/notifications';
 
 export const useSharedLists = (userId: string, userName: string) => {
   const [items, setItems] = useState<SupermarketItem[]>([]);
@@ -120,6 +121,14 @@ export const useSharedLists = (userId: string, userName: string) => {
         });
       } catch (error) {
         console.error('❌ Error recording add action:', error);
+        // No lanzar error para no interrumpir el flujo principal
+      }
+
+      // Enviar notificación a otros usuarios
+      try {
+        await notifyItemAdded(userId, userName, formData.name.trim());
+      } catch (error) {
+        console.error('❌ Error sending notification:', error);
         // No lanzar error para no interrumpir el flujo principal
       }
     } catch (error) {
@@ -254,6 +263,14 @@ export const useSharedLists = (userId: string, userName: string) => {
           });
         } catch (error) {
           console.error('❌ Error recording complete action:', error);
+          // No lanzar error para no interrumpir el flujo principal
+        }
+
+        // Enviar notificación a otros usuarios
+        try {
+          await notifyItemCompleted(userId, userName, item.name);
+        } catch (error) {
+          console.error('❌ Error sending notification:', error);
           // No lanzar error para no interrumpir el flujo principal
         }
       }

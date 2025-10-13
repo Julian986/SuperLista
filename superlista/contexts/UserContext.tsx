@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
+import { registerForPushNotificationsAsync, saveNotificationToken } from '../lib/notifications';
 
 interface User {
   id: string;
@@ -56,6 +57,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     debugAsyncStorage();
   }, []);
 
+  // Registrar para notificaciones push
+  const registerNotifications = async (userId: string) => {
+    try {
+      console.log('🔔 Registering for push notifications...');
+      const token = await registerForPushNotificationsAsync();
+      
+      if (token) {
+        console.log('✅ Push token obtained:', token);
+        const success = await saveNotificationToken(userId, token);
+        if (success) {
+          console.log('✅ Notification token saved successfully');
+        } else {
+          console.log('⚠️ Could not save notification token');
+        }
+      } else {
+        console.log('⚠️ Could not get push token');
+      }
+    } catch (error) {
+      console.error('❌ Error registering notifications:', error);
+    }
+  };
+
   const loadUser = async () => {
     try {
       console.log('🔍 Loading user data...');
@@ -87,6 +110,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 image: userData.image || undefined
               });
               console.log('🎉 User loaded successfully:', userData.name);
+              
+              // Registrar notificaciones para el usuario
+              registerNotifications(userData.id);
             } else {
               console.warn('⚠️ Invalid user data structure, clearing...');
               await AsyncStorage.removeItem('user');
@@ -157,6 +183,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       
       setUser(userData);
       console.log('🎉 User logged in:', userData.name);
+      
+      // Registrar notificaciones para el usuario
+      registerNotifications(userId);
     } catch (error) {
       console.error('Error saving user:', error);
       throw error;

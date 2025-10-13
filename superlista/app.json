@@ -23,7 +23,33 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.superlista.familia",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "NOTIFICATIONS",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#4CAF50",
+      "androidMode": "default",
+      "androidCollapsedTitle": "SuperLista"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#4CAF50",
+          "sounds": []
+        }
+      ]
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/a3328c66-1062-4527-b70d-8a1924c9a3b9"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     },
     "extra": {
       "eas": {
