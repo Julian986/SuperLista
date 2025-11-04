@@ -74,7 +74,7 @@ export default function MisListasScreen() {
           {/* Texto Misterioso */}
           <View style={styles.mysteryTextContainer}>
             <Text style={styles.mysteryTitle}>Algo increíble</Text>
-            <Text style={styles.mysteryTitle}>está por llegara...</Text>
+            <Text style={styles.mysteryTitle}>está por s...</Text>
             
             <View style={styles.mysterySubtitleContainer}>
               <Text style={styles.mysterySubtitle}>
