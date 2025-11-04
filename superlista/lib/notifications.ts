@@ -154,7 +154,8 @@ export async function notifyItemAdded(
     const tokens = await getOtherUsersTokens(currentUserId);
     
     if (tokens.length === 0) {
-      console.log('No hay otros usuarios para notificar');
+      // Fallback para pruebas: mostrar notificación local si no hay otros usuarios
+      await scheduleLocalNotification('🛒 Producto agregado', `${userName} agregó "${itemName}" a la lista (notificación local)`);
       return;
     }
 
@@ -181,7 +182,8 @@ export async function notifyItemCompleted(
     const tokens = await getOtherUsersTokens(currentUserId);
     
     if (tokens.length === 0) {
-      console.log('No hay otros usuarios para notificar');
+      // Fallback para pruebas: mostrar notificación local si no hay otros usuarios
+      await scheduleLocalNotification('✅ Producto comprado', `${userName} marcó "${itemName}" como comprado (notificación local)`);
       return;
     }
 

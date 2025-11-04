@@ -2,6 +2,8 @@
 SuperLista
 
 Tasks
+- Notificaciones
+
 - Editar perfil
 - Funcion recuerdame no funciona.✅
 - Animacion
