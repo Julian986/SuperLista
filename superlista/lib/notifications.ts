@@ -9,6 +9,9 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
+    // Requeridos por SDKs recientes (iOS)
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
