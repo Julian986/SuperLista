@@ -6,15 +6,15 @@ on:
       - main
       - master
     paths:
-      - 'app/**'
-      - 'components/**'
-      - 'contexts/**'
-      - 'hooks/**'
-      - 'lib/**'
-      - 'utils/**'
-      - 'types/**'
-      - 'constants/**'
-      - 'config/**'
+      - 'superlista/app/**'
+      - 'superlista/components/**'
+      - 'superlista/contexts/**'
+      - 'superlista/hooks/**'
+      - 'superlista/lib/**'
+      - 'superlista/utils/**'
+      - 'superlista/types/**'
+      - 'superlista/constants/**'
+      - 'superlista/config/**'
 
 jobs:
   update:
@@ -29,6 +29,7 @@ jobs:
         with:
           node-version: 20.x
           cache: npm
+          cache-dependency-path: superlista/package-lock.json
 
       - name: 🏗️ Setup EAS
         uses: expo/expo-github-action@v8
@@ -37,11 +38,15 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Instalar dependencias
+        working-directory: superlista
         run: npm ci
 
-      - name: 🚀 Publicar update
-        run: eas update --auto --non-interactive
+      - name: 🚀 Publicar update a canal preview
+        working-directory: superlista
+        run: |
+          eas update --branch preview --non-interactive --message "CI update $GITHUB_SHA"
 
       - name: ✅ Actualización completada
         run: echo "✅ Update publicado exitosamente al canal preview"
+
 
