@@ -31,6 +31,48 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [rememberUser, setRememberUser] = useState(true);
 
+  // Asegura que el usuario exista en la BD; si no existe, lo busca por nombre o lo crea
+  const ensureUserExists = async (name: string, savedId?: string): Promise<string> => {
+    try {
+      // 1) Intentar por ID guardado
+      if (savedId) {
+        const { data: userById, error: idError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', savedId)
+          .single();
+
+        if (!idError && userById) {
+          return userById.id;
+        }
+      }
+
+      // 2) Intentar por nombre
+      const { data: userByName, error: nameError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('name', name.trim())
+        .single();
+
+      if (!nameError && userByName) {
+        return userByName.id;
+      }
+
+      // 3) Crear si no existe
+      const { data: newUser, error: insertError } = await supabase
+        .from('users')
+        .insert({ name: name.trim() })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+      return newUser.id;
+    } catch (error) {
+      // Si algo falla, re-lanzar para que el caller maneje
+      throw error;
+    }
+  };
+
   // Cargar datos del usuario al iniciar
   useEffect(() => {
     loadUser();
@@ -106,17 +148,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             
             // Verificar que los datos sean válidos
             if (userData.id && userData.name && typeof userData.isLoggedIn === 'boolean') {
-              console.log('🔧 Setting user state with:', userData);
-              setUser({
-                id: userData.id,
+              console.log('🔧 Ensuring user exists in DB for remembered session...');
+              // Asegurar que el usuario exista y obtener el ID real actualizado
+              const resolvedUserId = await ensureUserExists(userData.name, userData.id);
+
+              const resolvedUser = {
+                id: resolvedUserId,
                 name: userData.name,
                 isLoggedIn: userData.isLoggedIn,
-                image: userData.image || undefined
-              });
-              console.log('🎉 User loaded successfully:', userData.name);
-              
-              // Registrar notificaciones para el usuario
-              registerNotifications(userData.id);
+                image: userData.image || undefined,
+              };
+
+              // Si el ID cambió, actualizar AsyncStorage
+              if (resolvedUserId !== userData.id) {
+                console.log('♻️ User ID updated after ensuring existence. Saving to AsyncStorage...');
+                await AsyncStorage.setItem('user', JSON.stringify(resolvedUser));
+              }
+
+              console.log('🔧 Setting user state with ensured user:', resolvedUser);
+              setUser(resolvedUser);
+              console.log('🎉 User loaded/ensured successfully:', resolvedUser.name);
+
+              // Registrar notificaciones con el ID válido
+              registerNotifications(resolvedUserId);
             } else {
               console.warn('⚠️ Invalid user data structure, clearing...');
               await AsyncStorage.removeItem('user');
