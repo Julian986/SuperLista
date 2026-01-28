@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "444605524712",
+    "project_id": "superlista-e4bb8",
+    "storage_bucket": "superlista-e4bb8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444605524712:android:993f170c865544d0b8775d",
+        "android_client_info": {
+          "package_name": "com.superlista.familia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbKwZTa9GyCRANVpz5hQuxvNjXnUuWj90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

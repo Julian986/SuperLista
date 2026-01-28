@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../lib/supabase';
-import { registerForPushNotificationsAsync, saveNotificationToken, scheduleLocalNotification } from '../lib/notifications';
+import { registerForPushNotificationsAsync, saveNotificationToken } from '../lib/notifications';
 
 interface User {
   id: string;
@@ -113,12 +113,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         } else {
           console.log('⚠️ Could not save notification token');
         }
-        // Notificación local de prueba para confirmar permisos OK
-        await scheduleLocalNotification('🔔 Notificaciones activadas', 'Todo listo. Recibirás avisos cuando otros agreguen o compren productos.');
       } else {
         console.log('⚠️ Could not get push token');
-        // Aunque no haya token (p.ej. simulador), intentamos mostrar una local para validar permisos
-        await scheduleLocalNotification('🔔 Prueba de notificaciones', 'Si ves este mensaje, los permisos locales funcionan.');
       }
     } catch (error) {
       console.error('❌ Error registering notifications:', error);
