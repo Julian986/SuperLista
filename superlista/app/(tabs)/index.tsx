@@ -211,7 +211,12 @@ export default function SuperListaHome() {
                     </View>
 
                     {/* Marcador visual para confirmar EAS Update */}
-                    <View style={styles.updateMarkerBar} />
+                    <LinearGradient
+                      colors={['#00E0FF', '#E000FF']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.updateMarkerBar}
+                    />
 
                     {/* ===== CONTENIDO PRINCIPAL ===== */}
                     <View style={styles.content}>
@@ -399,7 +404,6 @@ const styles = StyleSheet.create({
   },
   updateMarkerBar: {
     height: 4,
-    backgroundColor: '#8A2BE2', // violeta (blueviolet)
   },
 
   // ===== CONTENIDO =====
