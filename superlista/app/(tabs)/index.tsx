@@ -210,6 +210,9 @@ export default function SuperListaHome() {
                       </TouchableOpacity>
                     </View>
 
+                    {/* Marcador visual para confirmar EAS Update */}
+                    <View style={styles.updateMarkerBar} />
+
                     {/* ===== CONTENIDO PRINCIPAL ===== */}
                     <View style={styles.content}>
                       {isLoading ? (
@@ -393,6 +396,10 @@ const styles = StyleSheet.create({
   },
   refreshButton: {
     padding: 4,
+  },
+  updateMarkerBar: {
+    height: 4,
+    backgroundColor: '#2196F3', // azul
   },
 
   // ===== CONTENIDO =====

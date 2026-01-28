@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import { supabase } from './supabase';
 
 // Configuración de cómo se mostrarán las notificaciones cuando la app está en foreground
@@ -45,9 +46,13 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     }
     
     try {
-      token = (await Notifications.getExpoPushTokenAsync({
-        projectId: 'a3328c66-1062-4527-b70d-8a1924c9a3b9',
-      })).data;
+      const projectId =
+        Constants.easConfig?.projectId ??
+        Constants.expoConfig?.extra?.eas?.projectId ??
+        // Fallback (si no está disponible por alguna razón)
+        'a3328c66-1062-4527-b70d-8a1924c9a3b9';
+
+      token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
     } catch (error) {
       console.error('Error al obtener token de push:', error);
     }
