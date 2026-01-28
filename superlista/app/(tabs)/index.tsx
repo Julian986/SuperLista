@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   },
   updateMarkerBar: {
     height: 4,
-    backgroundColor: '#2196F3', // azul
+    backgroundColor: '#8A2BE2', // violeta (blueviolet)
   },
 
   // ===== CONTENIDO =====
