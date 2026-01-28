@@ -20,9 +20,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF",
-        "googleServicesFile": "./google-services.json"
+        "backgroundColor": "#FFFFFF"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.superlista.familia",
       "versionCode": 1,
       "permissions": [
