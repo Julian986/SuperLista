@@ -41,12 +41,12 @@ jobs:
         working-directory: superlista
         run: npm ci
 
-      - name: 🚀 Publicar update a canal preview
+      - name: 🚀 Publicar update a canal production
         working-directory: superlista
         run: |
-          eas update --branch preview --non-interactive --message "CI update $GITHUB_SHA"
+          eas update --channel production --non-interactive --message "CI production update $GITHUB_SHA"
 
       - name: ✅ Actualización completada
-        run: echo "✅ Update publicado exitosamente al canal preview"
+        run: echo "✅ Update publicado exitosamente al canal production"
 
 
