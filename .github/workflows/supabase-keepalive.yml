@@ -1,0 +1,51 @@
+# Evita que el proyecto Free de Supabase se pause por inactividad (~7 días).
+# Corre lunes y jueves 12:00 UTC (~09:00 Argentina) y hace un SELECT mínimo vía REST.
+#
+# Repository secrets (Settings → Secrets and variables → Actions → pestaña Secrets):
+#   SUPABASE_URL       = https://uilafsbjxfhfniqhakbr.supabase.co  (sin /rest/v1/)
+#   SUPABASE_ANON_KEY  = la misma anon JWT (eyJ...) que en superlista/config/supabase.ts
+#
+# NO uses Environment secrets (eso rompió el primer setup de Frankestein).
+#
+# Probar ya: Actions → Supabase keep-alive → Run workflow
+#
+# Solo se manda `apikey` (sin Authorization Bearer).
+
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "0 12 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase (SELECT mínimo)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Faltan secrets SUPABASE_URL o SUPABASE_ANON_KEY"
+            echo "GitHub → Settings → Secrets and variables → Actions → Secrets (no Environments)"
+            exit 1
+          fi
+
+          URL="${SUPABASE_URL%/}/rest/v1/users?select=id&limit=1"
+          CODE=$(curl -sS -o /tmp/keepalive-body.txt -w "%{http_code}" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Accept: application/json" \
+            "$URL")
+
+          echo "HTTP $CODE"
+          cat /tmp/keepalive-body.txt
+          echo
+
+          if [ "$CODE" != "200" ]; then
+            echo "Keep-alive falló"
+            exit 1
+          fi
+
+          echo "Keep-alive OK"
